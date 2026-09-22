@@ -6,8 +6,8 @@ num = 0
 GPIO.setup(leds, GPIO.OUT)
 sleep_time = 0.2
 GPIO.output(leds, 0)
-up = 10
-down = 9
+up = 9
+down = 10
 GPIO.setup(up, GPIO.IN)
 GPIO.setup(down, GPIO.IN)
 
@@ -32,4 +32,4 @@ while True:
     if num > 255:
         num = 0
     GPIO.output(leds, dec2bin(num))
-    time.sleep(sleep_time*5)
+    time.sleep(sleep_time)
