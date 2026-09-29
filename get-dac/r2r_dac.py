@@ -15,11 +15,13 @@ class R2R_DAC:
     
     def set_voltage(self, voltage):
         if not(0.0<=voltage<=self.dynamic_range):
-            print(f"Напряжение выходит за динамический диапазон ЦАП (0.00 - {dynamic_range:.2f} В)")
+            print(f"Напряжение выходит за динамический диапазон ЦАП (0.00 - {self.dynamic_range:.2f} В)")
             print("Устанавливаем 0.0 В")
-            set_number(self, 0)
-        b = int(voltage/ self.dynamic_range *255)
-        return(set_number(self, b))
+            #self.set_number(0)
+            GPIO.output(self.gpio_bits, 0)
+        else:
+            b = int(voltage/ self.dynamic_range *255)
+            self.set_number(b)
 
     def deinit(self):
         GPIO.output(self.gpio_bits, 0)
@@ -35,5 +37,5 @@ if __name__ == "__main__":
             except ValueError:
                 print("Вы ввели не число. Попробуйте ещё раз\n")
     finally:
-        #dac.deinit()
-        print("Test")
+        dac.deinit()
+        
