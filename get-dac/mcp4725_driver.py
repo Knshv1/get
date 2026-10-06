@@ -27,7 +27,7 @@ class MCP4725:
         first_byte = self.wm | self.pds | (number >> 8)
         second_byte = number & 0xFF
 
-        self.bus.write_byte_data(self.address, first_byte, second_byte)
+        self.bus.write_byte_data(0x61, first_byte, second_byte)
 
         if self.verbose:
             print(
@@ -45,9 +45,9 @@ class MCP4725:
 
 
 if __name__ == "__main__":
-    dac = None
+    
     try:
-        dac = MCP4725(3.3, 0x61, True)
+        dac = MCP4725(5.1, 0x61, True)
 
         while True:
             try:
@@ -56,6 +56,6 @@ if __name__ == "__main__":
             except ValueError:
                 print("Вы ввели не число. Попробуйте ещё раз\n")
     finally:
-        if dac is not None:
-            dac.deinit()
+        
+        dac.deinit()
         
