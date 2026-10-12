@@ -1,23 +1,27 @@
 import r2r_dac as r2r
-import signal_generator as sg
 import time
+import RPi.GPIO as GPIO
+import signal_generator as sg
+amplitude = 3.183
+freq = 10
+t = 0
+samplfreq = 1000
+try:
+    dac = r2r.R2R_DAC([22,27,17,26,25,21,20,16], 3.183, True)
+    while True:
+        time.sleep(1/samplfreq)
+        t += 1/samplfreq
 
-amplitude = 3.2
-signal_frequency = 10
-sampling_frequency = 1000
-tnow = 0
+        s = sg.get_sin_wave_amplitude(freq, t)
 
-
-
-if __name__ == "__main__":
-    try:
-        dac = r2r.R2R_DAC([16, 20, 21, 25, 26, 17, 27, 22], amplitude, True)
-
-        while True:
-            c = sg.get_sin_wave_amplitude(signal_frequency, tnow) * amplitude
-            
-            dac.set_voltage(c)
-            sg.wait_for_sampling_period(sampling_frequency)
-            tnow = tnow + (1/sampling_frequency)
-    finally:
-        dac.deinit()
+        s *= amplitude
+        print(s)
+        nu = dac.set_voltage(s)
+        #nu = int(s * 255 / 3.183)
+        GPIO.output(dac.gpio_bits, nu)
+        print(nu)
+        
+        
+finally:
+    print('bruh')
+    dac.deinit()
