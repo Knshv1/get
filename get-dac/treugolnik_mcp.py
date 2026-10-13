@@ -14,8 +14,8 @@ try:
         try:
             s = tr.trian(sfreq, time.time())
             time.sleep(1/samplfreq)
-            nu = dac.set_voltage(s)
-            print(nu)
+            dac.set_voltage(s)
+            
         except ValueError:
             print('')
 finally:

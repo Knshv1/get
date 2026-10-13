@@ -23,5 +23,5 @@ try:
         
         
 finally:
-    print('bruh')
+    
     dac.deinit()
