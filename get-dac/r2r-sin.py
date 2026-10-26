@@ -2,22 +2,30 @@ import r2r_dac as r2r
 import signal_generator as sg
 import time
 
-amplitude = 3.2
-signal_frequency = 10
-sampling_frequency = 1000
-tnow = 0
+# Параметры генерируемого сигнала
+amplitude = 3.2             # В
+signal_frequency = 10       # Гц
+sampling_frequency = 1000   # Гц
 
+try:
+    # Создаём объект класса для управления R2R-ЦАП
+    dac = r2r.R2R_DAC([16, 20, 21, 25, 26, 17, 27, 22], 3.29, False)
 
+    t = 1.0
+    dt = 1.0 / sampling_frequency
 
-if __name__ == "__main__":
-    try:
-        dac = r2r.R2R_DAC([16, 20, 21, 25, 26, 17, 27, 22], amplitude, True)
+    while True:
+        # Получаем нормализованную амплитуду (0..1) в момент времени t
+        normalized = sg.get_sin_wave_amplitude(signal_frequency, t)
+        # Масштабируем на заданную амплитуду и выставляем на ЦАП
+        dac.set_voltage(normalized * amplitude)
 
-        while True:
-            c = sg.get_sin_wave_amplitude(signal_frequency, tnow) * amplitude
-            
-            dac.set_voltage(c)
-            sg.wait_for_sampling_period(sampling_frequency)
-            tnow = tnow + (1/sampling_frequency)
-    finally:
-        dac.deinit()
+        # Ждём один период дискретизации
+        sg.wait_for_sampling_period(sampling_frequency)
+
+        # Переходим к следующему моменту времени
+        t += dt
+
+finally:
+    # Сбрасываем настройки GPIO
+    dac.deinit()
