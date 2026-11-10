@@ -8,7 +8,7 @@ import RPi.GPIO as GPIO
 class R2R_ADC:
     """dynamic_range — измеренное напряжение ЦАП при коде 255, в вольтах."""
 
-    def __init__(self, dynamic_range, compare_time=0.01, verbose=False):
+    def __init__(self, dynamic_range, compare_time=0.05, verbose=False):
         if dynamic_range <= 0:
             raise ValueError("Динамический диапазон должен быть положительным")
         if compare_time < 0:
@@ -78,6 +78,8 @@ class R2R_ADC:
             trial_number = number | (1 << bit)
             self.number_to_dac(trial_number)
             time.sleep(self.compare_time)
+            #time.sleep(0.1)
+
 
             # HIGH означает U_ЦАП > U_вход: пробный бит оставляем нулём.
             # При LOW пробный код не превышает вход, поэтому сохраняем бит.
@@ -105,7 +107,8 @@ if __name__ == "__main__":
         print("АЦП последовательного приближения. Для остановки нажмите Ctrl+C.")
 
         while True:
-            voltage = adc.get_sar_voltage()
+            voltage = adc.get_sc_voltage()
+            #voltage = adc.get_sar_voltage()
             print(f"Напряжение: {voltage:.3f} В", flush=True)
 
     except KeyboardInterrupt:

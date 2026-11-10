@@ -8,7 +8,7 @@ from mcp3021_driver import MCP3021
 
 # Замените пример на измеренное напряжение PWR блока AUX относительно GND.
 DYNAMIC_RANGE = 5.0
-DURATION = 3.0         # Продолжительность сбора данных, с.
+DURATION = 10.0         # Продолжительность сбора данных, с.
 SHOW_HISTOGRAM = True  # Задание 8: False. Задания 8 и 9 вместе: True.
 
 

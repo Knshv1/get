@@ -7,10 +7,9 @@ from r2r_adc import R2R_ADC
 
 
 # Замените пример на измеренное мультиметром напряжение ЦАП при коде 255.
-DYNAMIC_RANGE = 3.3
+DYNAMIC_RANGE = 3.12
 DURATION = 3.0          # Продолжительность сбора данных, с.
-COMPARE_TIME = 0.0001   # Пауза для компаратора после каждого кода ЦАП, с.
-
+COMPARE_TIME = 0.005   
 
 def main():
     if DURATION <= 0:
